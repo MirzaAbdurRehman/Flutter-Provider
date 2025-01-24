@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:practice_provider1/provider/change_theme.dart';
 import 'package:practice_provider1/provider/count_provider.dart';
 import 'package:practice_provider1/provider/favourite_provider.dart';
 import 'package:practice_provider1/provider/multiple_screen_provider.dart';
+import 'package:practice_provider1/screens/Value_listenable_screen.dart';
 import 'package:practice_provider1/screens/count_screen.dart';
+import 'package:practice_provider1/screens/darktheme.dart';
 import 'package:practice_provider1/screens/multiple_screen.dart';
 import 'package:practice_provider1/screens/myFavourite/favourite_screen.dart';
 import 'package:provider/provider.dart';
@@ -29,16 +32,31 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(  // Globally Context
             create: (_) => FavouriteProvider(),),
 
-
+          ChangeNotifierProvider(  // Globally Context
+            create: (_) =>  Theme_Changer_Provider(),),
     ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      child: Builder(
+        builder: (BuildContext context){
+          final themeChanger = Provider.of<Theme_Changer_Provider>(context);  // use in below
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            themeMode: themeChanger.themeMode, // own define
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              brightness: Brightness.light,
+              primarySwatch: Colors.purple,
+            ),
+            darkTheme: ThemeData(
+              brightness: Brightness.dark,
+              primarySwatch: Colors.teal,
+              appBarTheme: AppBarTheme(
+          backgroundColor: Colors.teal,
+            ),
+            ),
+            home: Value_Listenable_Screen(),
+          );
+        },
       ),
-      home: FavouriteScreen(),
-    ),
     );
   }
 }
